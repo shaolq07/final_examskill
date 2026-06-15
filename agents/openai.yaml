@@ -1,0 +1,7 @@
+interface:
+  display_name: "FinalSkill"
+  short_description: "Turn course materials into exam-focused study systems."
+  default_prompt: "Use $finalskill to turn my course PDFs, PPTs, quizzes, assignments, and past papers into an exam-focused review plan."
+
+policy:
+  allow_implicit_invocation: true
