@@ -43,15 +43,35 @@ Use "why" fields tied to evidence: repeated in slides, used in assignment, appea
 
 Recommended structure:
 
-1. **Executive exam brief**: 10-20 bullets, no fluff.
-2. **Topic priority map**: table sorted by priority.
-3. **Concept cards**: grouped by unit.
-4. **Question bank**: easy -> medium -> exam-hard.
-5. **Mock exam**: timed, with marks per question.
-6. **Answer key**: final answers plus reasoning.
-7. **Rubric**: partial-credit criteria.
-8. **Mistake log**: root cause, fix, drill.
-9. **Review path**: daily/session plan.
+1. **Final review notes**: the main study material, organized by exam topic.
+2. **Exam cheat sheet**: formulas, definitions, procedures, traps, and citations.
+3. **Executive exam brief**: 10-20 bullets, no fluff.
+4. **Topic priority map**: table sorted by priority.
+5. **Concept cards**: grouped by unit.
+6. **Question bank**: easy -> medium -> exam-hard.
+7. **Mock exam**: timed, with marks per question.
+8. **Answer key**: final answers plus reasoning.
+9. **Rubric**: partial-credit criteria.
+10. **Mistake log**: root cause, fix, drill.
+11. **Review path**: daily/session plan.
+
+## Direct Review Notes
+
+When the user asks for study materials from slides or PDFs, create saved notes by default.
+
+```markdown
+# Final Review Notes: <course>
+
+## Exam Map
+<high-yield table with source citations>
+
+## Topic: <name>
+
+- **Exam point**: <concise explanation>. Source: <file/page/slide>.
+- **Formula / method**: <conditions and steps>. Source: <file/page/slide>.
+- **Typical question**: <representative exam pattern>.
+- **Trap**: <likely mistake and fix>.
+```
 
 ## Mock Exam
 
