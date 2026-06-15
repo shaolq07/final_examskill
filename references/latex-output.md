@@ -1,0 +1,91 @@
+# LaTeX Output Rules
+
+Use this reference when producing the final FinalSkill study document.
+
+## Default Artifact Contract
+
+The default final artifacts are:
+
+- `FinalSkill - <stem>.tex`
+- `FinalSkill - <stem>.pdf`
+
+The `.pdf` is required when `xelatex` is available. The `.tex` is always required.
+
+## Build Steps
+
+1. Create the output folder `FinalSkill - <stem>`.
+2. Write all extraction and planning notes inside that folder.
+3. Write `FinalSkill - <stem>.tex`.
+4. Run `xelatex -interaction=nonstopmode -halt-on-error "<tex-file>"` from the output folder.
+5. Verify the command exit status is success.
+6. Verify the PDF exists.
+7. If LaTeX fails, inspect the log, fix the source, and retry if the problem is fixable.
+
+## Recommended Preamble
+
+```latex
+\documentclass[UTF8,12pt]{ctexart}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\setlength{\tabcolsep}{3pt}
+\setlist[itemize]{leftmargin=2em,itemsep=0.2em}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.2em}
+```
+
+Use `ctexart` for Chinese-first review documents. Keep the layout single-column and readable by default.
+
+## Required Sections
+
+Every final document should include:
+
+1. `如何使用这份复习资料`
+2. `我是如何判断考点的`
+3. `考试地图`
+4. `考点复习`
+5. `考前速查表`
+6. `老师风格练习题`
+7. `答案与评分点`
+8. `错因诊断`
+9. `个性化复习路径`
+
+If the user asks for a narrower artifact, include only relevant sections, but still include `我是如何判断考点的` unless the user explicitly excludes rationale.
+
+## Required Transparency Section
+
+```latex
+\section{我是如何判断考点的}
+\begin{itemize}
+  \item \textbf{高频依据：} <slides/pages/topics that repeat or receive emphasis>
+  \item \textbf{作业依据：} <assignments/labs/problem sets tied to topics>
+  \item \textbf{Quiz 依据：} <quiz questions or quiz patterns>
+  \item \textbf{往年题依据：} <past-paper questions or recurring formats>
+  \item \textbf{推测部分：} <reasonable inference from course structure>
+  \item \textbf{不确定部分：} <missing sources, weak evidence, extraction uncertainty>
+\end{itemize}
+```
+
+When evidence is absent for a category, write `暂无明确材料支持` instead of inventing support.
+
+## Content Style
+
+- Chinese-first for Chinese prompts.
+- Put important English terms in parentheses: `中心极限定理 (Central Limit Theorem)`.
+- Use source citations inline: `来源：Lecture 4, p. 18`.
+- Prefer itemized lists over wide tables.
+- Use tables only when they remain readable on A4.
+- Keep formulas in math mode.
+- Escape special characters from source text: `# $ % & _ { } ~ ^ \`.
+- Do not copy large slide text verbatim.
+
+## Completion Gate
+
+Do not report completion unless:
+
+- `.tex` exists.
+- `我是如何判断考点的` is present and filled.
+- source citations are present where source locations are available.
+- PDF exists, or a missing/failed `xelatex` build is explicitly reported.

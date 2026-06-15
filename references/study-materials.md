@@ -4,7 +4,7 @@ Use this reference when the user wants FinalSkill to directly create review mate
 
 ## Required Behavior
 
-Do not stop at a chat-only summary unless the user explicitly asks for inline output only. Create saved study-material files by default.
+Do not stop at a chat-only summary unless the user explicitly asks for inline output only. Create a LaTeX source file and compiled PDF by default. Markdown may be used for internal working notes, but it is not the final deliverable unless the user explicitly requests Markdown.
 
 Default output folder:
 
@@ -12,19 +12,15 @@ Default output folder:
 FinalSkill - <course-or-source-stem>/
 ```
 
-Keep all generated notes, drafts, extracted text, question banks, answer keys, and logs in that folder.
+Keep all generated notes, drafts, extracted text, question banks, answer keys, PDFs, LaTeX files, and logs in that folder.
 
 ## Default Study Material Set
 
 | File | Purpose |
 | --- | --- |
-| `final-review-notes.md` | Main exam-oriented review notes, Chinese-first when appropriate |
-| `exam-cheat-sheet.md` | Fast lookup sheet for formulas, definitions, procedures, traps |
-| `concept-cards.md` | One card per examinable concept |
-| `practice-bank.md` | Instructor-style questions by topic and difficulty |
-| `answer-key-and-rubrics.md` | Model answers, marking points, partial credit |
-| `mistake-log.md` | Root-cause diagnosis and remediation |
-| `review-path.md` | Personalized study sessions |
+| `FinalSkill - <stem>.tex` | Final LaTeX study document |
+| `FinalSkill - <stem>.pdf` | Compiled PDF final deliverable |
+| `working-notes.md` | Internal extraction notes and draft planning |
 | `sources.md` | Source inventory and coverage map |
 
 ## Global Read and Segmentation
@@ -49,69 +45,88 @@ Segment notes should contain:
 
 ## Final Review Notes Template
 
-```markdown
-# Final Review Notes: <course>
+```latex
+\section{如何使用这份复习资料}
+\begin{itemize}
+  \item <highest priority action>
+  \item <what to memorize>
+  \item <what to practice>
+\end{itemize}
 
-## How To Use This
+\section{我是如何判断考点的}
+\begin{itemize}
+  \item \textbf{高频依据：} <repeated slides/topics with citations>
+  \item \textbf{作业依据：} <assignments/labs with citations>
+  \item \textbf{Quiz 依据：} <quiz evidence with citations>
+  \item \textbf{往年题依据：} <past paper evidence with citations>
+  \item \textbf{推测部分：} <inferred priorities and why>
+  \item \textbf{不确定部分：} <gaps, weak evidence, or extraction uncertainty>
+\end{itemize}
 
-- <highest priority action>
-- <what to memorize>
-- <what to practice>
+\section{考试地图}
+<readable table or bullet list>
 
-## Exam Map
+\section{<Unit or Topic>}
+\subsection{核心考点}
+\begin{itemize}
+  \item \textbf{<point>}：<concise explanation>. 来源：<file/page/slide>.
+\end{itemize}
 
-| Unit | Must Know | Likely Tasks | Source | Priority |
-| --- | --- | --- | --- | --- |
+\subsection{关键术语}
+\begin{itemize}
+  \item \textbf{Chinese term (English term)}：<definition and exam use>.
+\end{itemize}
 
-## <Unit or Topic>
-
-### Core Exam Points
-
-- **<point>**: <concise explanation>. Source: <file/page/slide>.
-
-### Key Terms
-
-- **Chinese term (English term)**: <definition and exam use>.
-
-### Formulas / Procedures
-
-- **<formula or method>**: <conditions, steps, and trap>. Source: <file/page/slide>.
-
-### Representative Examples
-
-- **Pattern**: <what the exam may ask>.
-- **Solution idea**: <how to approach it>.
-
-### Common Traps
-
-- <trap>: <how to avoid it>.
+\subsection{公式 / 方法}
+\begin{itemize}
+  \item \textbf{<formula or method>}：<conditions, steps, and trap>. 来源：<file/page/slide>.
+\end{itemize}
 ```
 
 ## Exam Cheat Sheet Template
 
-```markdown
-# Exam Cheat Sheet: <course>
+```latex
+\section{考前速查表}
 
-## Must-Memorize Definitions
+\subsection{必背定义}
+<compact list or table>
 
-| Concept | Exam wording | Trap | Source |
-| --- | --- | --- | --- |
+\subsection{公式与适用条件}
+<compact list or table>
 
-## Formulas and Conditions
+\subsection{解题流程}
+<compact list or table>
 
-| Formula | Use When | Do Not Use When | Source |
-| --- | --- | --- | --- |
-
-## Procedures
-
-| Task | Steps | Check | Source |
-| --- | --- | --- | --- |
-
-## Last-Minute Traps
-
-| Trap | Symptom | Fix |
-| --- | --- | --- |
+\subsection{最后检查的易错点}
+<compact list or table>
 ```
+
+## Required Transparency Section
+
+Every final `.tex` document must include:
+
+```latex
+\section{我是如何判断考点的}
+\begin{itemize}
+  \item \textbf{高频依据：}
+  \item \textbf{作业依据：}
+  \item \textbf{Quiz 依据：}
+  \item \textbf{往年题依据：}
+  \item \textbf{推测部分：}
+  \item \textbf{不确定部分：}
+\end{itemize}
+```
+
+If a category has no evidence, write `暂无明确材料支持` and explain the consequence.
+
+## LaTeX Build Requirements
+
+- Use `xelatex` by default.
+- Use UTF-8 source.
+- Include Chinese font support through `ctexart`.
+- Keep layout readable; do not force dense two-column output unless requested.
+- Escape LaTeX special characters from source text.
+- Use citations like `来源：Lecture 3, p. 12` or `来源：Quiz 2, Q4`.
 
 ## Verification Gate
 
@@ -122,16 +137,18 @@ Before reporting completion, verify:
 - formulas are not missing from formula-heavy sections
 - important English terms are present
 - practice questions match course evidence
-- generated files exist in the output folder
+- the final `.tex` exists in the output folder
+- the PDF exists if `xelatex` is available and compilation succeeds
+- `我是如何判断考点的` is present and filled
 - any uncertainty is reported explicitly
 
-## Optional PDF Output
+## PDF Output
 
-If the user asks for PDF:
+PDF is default.
 
 1. Write a `.tex` version of the review notes or cheat sheet.
 2. Check that `xelatex` is available.
 3. Compile with `xelatex`.
 4. Verify the PDF exists and the compile command succeeded.
 
-If `xelatex` is missing, report the blocker and keep the Markdown files as the completed fallback unless the user required PDF only.
+If `xelatex` is missing, report the blocker and provide the `.tex` file as the deliverable. Do not silently downgrade to Markdown.

@@ -43,8 +43,8 @@ Use "why" fields tied to evidence: repeated in slides, used in assignment, appea
 
 Recommended structure:
 
-1. **Final review notes**: the main study material, organized by exam topic.
-2. **Exam cheat sheet**: formulas, definitions, procedures, traps, and citations.
+1. **LaTeX/PDF final review document**: the main study material, organized by exam topic.
+2. **Exam cheat sheet section**: formulas, definitions, procedures, traps, and citations.
 3. **Executive exam brief**: 10-20 bullets, no fluff.
 4. **Topic priority map**: table sorted by priority.
 5. **Concept cards**: grouped by unit.
@@ -57,20 +57,29 @@ Recommended structure:
 
 ## Direct Review Notes
 
-When the user asks for study materials from slides or PDFs, create saved notes by default.
+When the user asks for study materials from slides or PDFs, create a saved `.tex` file and compiled PDF by default.
 
-```markdown
-# Final Review Notes: <course>
+```latex
+\section{我是如何判断考点的}
+\begin{itemize}
+  \item \textbf{高频依据：}
+  \item \textbf{作业依据：}
+  \item \textbf{Quiz 依据：}
+  \item \textbf{往年题依据：}
+  \item \textbf{推测部分：}
+  \item \textbf{不确定部分：}
+\end{itemize}
 
-## Exam Map
-<high-yield table with source citations>
+\section{考试地图}
+<high-yield table or list with source citations>
 
-## Topic: <name>
-
-- **Exam point**: <concise explanation>. Source: <file/page/slide>.
-- **Formula / method**: <conditions and steps>. Source: <file/page/slide>.
-- **Typical question**: <representative exam pattern>.
-- **Trap**: <likely mistake and fix>.
+\section{<Topic>}
+\begin{itemize}
+  \item \textbf{考点：} <concise explanation>. 来源：<file/page/slide>.
+  \item \textbf{公式 / 方法：} <conditions and steps>. 来源：<file/page/slide>.
+  \item \textbf{典型问法：} <representative exam pattern>.
+  \item \textbf{易错点：} <likely mistake and fix>.
+\end{itemize}
 ```
 
 ## Mock Exam

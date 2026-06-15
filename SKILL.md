@@ -1,6 +1,6 @@
 ---
 name: finalskill
-description: "AI final-exam study system for university courses. Use when Codex needs to transform course PPTs, PDFs, lecture notes, assignments, quizzes, labs, syllabi, rubrics, and past papers into concrete exam-focused study materials and files: final review notes, cheat sheets, structured knowledge maps, concept cards, instructor-style practice questions, model answers, grading rubrics, mistake diagnosis, weak-point remediation, and personalized review schedules. Trigger on requests about finals review, exam preparation, course revision, study materials, study packs, review notes, cheat sheets, mock exams, past-paper analysis, quiz-to-practice conversion, or Chinese-language final review prompts such as qimo fuxi, fuxi ziliao, kaodian zongjie, gongshi suzha, gainian kapian, wangnian ti, laoshi fengge lianxi ti, pingfen dian, cuoyin zhenduan, and personalized fuxi paths."
+description: "AI final-exam study system for university courses. Use when Codex needs to transform course PPTs, PDFs, lecture notes, assignments, quizzes, labs, syllabi, rubrics, and past papers into concrete exam-focused LaTeX/PDF study materials: final review notes, cheat sheets, structured knowledge maps, concept cards, instructor-style practice questions, model answers, grading rubrics, mistake diagnosis, weak-point remediation, and personalized review schedules. Trigger on requests about finals review, exam preparation, course revision, study materials, study packs, review notes, cheat sheets, mock exams, past-paper analysis, quiz-to-practice conversion, or Chinese-language final review prompts such as qimo fuxi, fuxi ziliao, kaodian zongjie, gongshi suzha, gainian kapian, wangnian ti, laoshi fengge lianxi ti, pingfen dian, cuoyin zhenduan, and personalized fuxi paths."
 ---
 
 # FinalSkill
@@ -9,22 +9,18 @@ FinalSkill turns messy course material into an exam-oriented review system. Trea
 
 ## Default Outcome
 
-When the user provides course materials and asks for review, summary, exam prep, or study materials, the successful default outcome is saved study-material files, not only an inline chat answer.
+When the user provides course materials and asks for review, summary, exam prep, or study materials, the successful default outcome is a saved LaTeX source file and compiled PDF study document, not only an inline chat answer and not Markdown as the final format.
 
 Create a deterministic output folder named `FinalSkill - <course-or-source-stem>` unless the user specifies another location. Keep generated notes, extracted text, drafts, practice sets, answer keys, and logs inside that folder.
 
 Default files:
 
-- `final-review-notes.md`: Chinese-first exam review notes with English terms in parentheses.
-- `exam-cheat-sheet.md`: compact formulas, definitions, procedures, traps, and page/slide citations.
-- `concept-cards.md`: exam-oriented concept cards.
-- `practice-bank.md`: instructor-style questions by topic and difficulty.
-- `answer-key-and-rubrics.md`: model answers and grading points.
-- `mistake-log.md`: diagnosis table and remediation drills.
-- `review-path.md`: personalized study sessions and cram plan.
+- `FinalSkill - <course-or-source-stem>.tex`: final Chinese-first LaTeX study document.
+- `FinalSkill - <course-or-source-stem>.pdf`: compiled PDF, required by default.
 - `sources.md`: source inventory and coverage map.
+- optional `working-notes.md`: internal extraction and planning notes, not the final deliverable.
 
-If the user explicitly asks for PDF output, write a `.tex` file and compile with `xelatex` when available. If `xelatex` is unavailable, report that blocker and still provide the Markdown study-material files unless the user required PDF only.
+Check that `xelatex` is available before promising the default PDF. If `xelatex` is unavailable, write the `.tex` file, report the PDF build blocker, and do not pretend the PDF was created. Only fall back to Markdown final output if the user explicitly asks for Markdown.
 
 ## Core Workflow
 
@@ -44,7 +40,8 @@ If the user explicitly asks for PDF output, write a `.tex` file and compile with
    - Classify each item as `Must Know`, `Likely`, `Useful`, or `Low Yield`.
 
 4. **Produce exam artifacts**
-   - Write final review notes and cheat sheets as files by default.
+   - Write a final LaTeX document and compile it to PDF by default.
+   - Include final review notes, exam cheat sheet, concept cards, practice questions, answer key, rubrics, mistake diagnosis, and review path in the same PDF unless the user requests a smaller artifact.
    - Make structured knowledge maps and topic dependency graphs.
    - Create concept cards with definition, intuition, conditions, common traps, example, and source.
    - Generate instructor-style practice questions with answers and grading points.
@@ -56,6 +53,7 @@ If the user explicitly asks for PDF output, write a `.tex` file and compile with
    - Run a coverage pass before finalizing files.
    - Check that every major lecture/topic segment appears in the final materials.
    - Check that formulas, key examples, English technical terms, and page/slide citations are present where available.
+   - Check that the document contains a section named `我是如何判断考点的`.
    - Mark unsupported claims as inference.
    - Do not invent instructor preferences when evidence is absent.
    - If multiple sources conflict, report the conflict and prefer syllabus/rubric/past papers over generic slides.
@@ -70,7 +68,7 @@ If the user explicitly asks for PDF output, write a `.tex` file and compile with
 Choose the smallest mode that satisfies the request.
 
 - **Course Pack Mode**: full transformation of course materials into a complete study package.
-- **Study Materials Mode**: default mode for slides/PDFs; produce saved final review notes and cheat sheets with citations.
+- **Study Materials Mode**: default mode for slides/PDFs; produce a compiled LaTeX/PDF final review document with citations.
 - **Exam Cram Mode**: high-yield review plan for limited time, usually 1-7 days.
 - **Past Paper Mode**: analyze past papers to infer patterns and generate similar questions.
 - **Question Factory Mode**: generate practice questions, model answers, and rubrics.
@@ -83,6 +81,7 @@ Choose the smallest mode that satisfies the request.
 Every substantial output should include:
 
 - Source basis: exact files/pages/slides/questions when available.
+- Transparent priority rationale: include `我是如何判断考点的` with high-frequency evidence, assignment evidence, quiz evidence, past-paper evidence, inferred parts, and uncertainty.
 - Exam relevance: why the item matters for finals.
 - Task type: recall, calculation, proof, explanation, comparison, application, case analysis, coding, lab interpretation, essay.
 - Difficulty: easy, medium, hard, exam-hard.
@@ -100,6 +99,34 @@ Every substantial output should include:
 - If extraction quality is too poor to preserve formulas, symbols, or page mapping, report the uncertainty instead of inventing math.
 - If source-derived diagrams are essential, describe or redraw the minimal conceptual diagram; do not add decorative visuals.
 
+## Transparency Section
+
+Every final study document must include this section, even when evidence is sparse:
+
+```markdown
+## 我是如何判断考点的
+
+- 高频依据：
+- 作业依据：
+- Quiz 依据：
+- 往年题依据：
+- 推测部分：
+- 不确定部分：
+```
+
+For each bullet, fill in course-specific evidence with file/page/slide/question references when available. If a category has no evidence, write `暂无明确材料支持` and explain whether the priority is inferred from course structure.
+
+## LaTeX/PDF Rules
+
+- The final deliverable is LaTeX plus PDF by default.
+- Use `xelatex` for Chinese text and math.
+- Use a clean article-style layout, readable spacing, and sectioned structure.
+- Keep Chinese as the main language for Chinese prompts and put important English terms in parentheses.
+- Use LaTeX tables sparingly; prefer readable lists when tables become too wide.
+- Escape LaTeX special characters in extracted text.
+- Do not report completion until the `.tex` file exists and `xelatex` either succeeded or failed with a clearly reported blocker.
+- If compilation fails, fix the `.tex` and retry when the failure is fixable.
+
 ## Evidence Rules
 
 - Use course-specific materials over general knowledge.
@@ -114,23 +141,25 @@ Load these only when needed:
 
 - `references/output-patterns.md`: templates for knowledge maps, concept cards, study packs, and mock exams.
 - `references/study-materials.md`: default file-producing workflow for final review notes and cheat sheets.
+- `references/latex-output.md`: LaTeX/PDF layout, required sections, build steps, and completion gate.
 - `references/question-design.md`: rules for instructor-style question generation, model answers, and grading rubrics.
 - `references/diagnosis-and-planning.md`: mistake taxonomy, remediation drills, and personalized review planning.
 
-Use `scripts/create_review_pack.py` when the user wants files created for a course review package or when course materials are provided and no output folder exists yet. It creates a clean Markdown folder structure for final review notes, cheat sheets, concept cards, practice questions, rubrics, diagnosis logs, and study plans.
+Use `scripts/create_review_pack.py` when the user wants files created for a course review package or when course materials are provided and no output folder exists yet. It creates a LaTeX-first review pack with a final `.tex` template, source inventory, and working-notes file.
 
 ## Default Deliverable Shape
 
 When the user gives course materials and asks broadly for review help, produce:
 
-1. Saved final review notes
-2. Saved exam cheat sheet
-3. Course exam map
-4. High-yield topic table
-5. Concept cards
-6. Practice set by topic
-7. Model answers and grading points
-8. Mistake traps and diagnostic checklist
-9. Personalized review path
+1. Saved LaTeX final review document
+2. Compiled PDF final review document
+3. Transparent `我是如何判断考点的` section
+4. Course exam map
+5. High-yield topic table
+6. Concept cards
+7. Practice set by topic
+8. Model answers and grading points
+9. Mistake traps and diagnostic checklist
+10. Personalized review path
 
-If the user only asks for one artifact, produce only that artifact as a saved file and keep source references.
+If the user only asks for one artifact, produce only that artifact as a LaTeX/PDF file and keep source references.
