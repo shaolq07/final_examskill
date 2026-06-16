@@ -26,8 +26,11 @@ Check that `xelatex` is available before promising the default PDF. If `xelatex`
 
 1. **Ingest course evidence**
    - Identify file types: syllabus, slides/PDFs, lecture notes, assignments, quizzes, labs, past papers, rubrics, textbook chapters, user notes.
+   - Ask the user to label materials as `slides`, `assignment`, `quiz`, `past_exam`, `rubric`, `syllabus`, or `notes` when labels are missing and filenames do not make the type obvious.
+   - Treat user-provided labels as the primary source of truth for material type.
    - Preserve source references by file name and page/slide/question number whenever available.
    - Separate instructor-provided evidence from student notes and model-generated inference.
+   - Do not mix slides and assessments into one generic source bucket; slides explain content, while assignments, quizzes, and past exams reveal question style.
 
 2. **Read globally and segment**
    - For long slide decks or PDFs, first identify the global structure, then segment by lecture, chapter, topic, or page range.
@@ -37,11 +40,15 @@ Check that `xelatex` is available before promising the default PDF. If `xelatex`
 3. **Build the course exam model**
    - Extract topics, concepts, formulas, methods, cases, definitions, proofs, algorithms, diagrams, and recurring examples.
    - Infer likely exam emphasis from frequency, recency, assignment coverage, quiz coverage, wording intensity, and past-paper recurrence.
+   - Weight evidence by source type: past exams and rubrics strongest, quizzes and assignments strong, syllabus objectives medium-strong, slides medium, student notes weak unless confirmed.
    - Classify each item as `Must Know`, `Likely`, `Useful`, or `Low Yield`.
+   - Build a question-pattern map from assignments, quizzes, and past exams before generating new questions.
 
 4. **Produce exam artifacts**
    - Write a final LaTeX document and compile it to PDF by default.
    - Include final review notes, exam cheat sheet, concept cards, practice questions, answer key, rubrics, mistake diagnosis, and review path in the same PDF unless the user requests a smaller artifact.
+   - Include an assessment-pattern summary: recurring question types, command verbs, mark allocation, topic combinations, and common transformations from homework to exam questions.
+   - Generate knowledge-point reproduction questions that re-test important concepts in forms similar to assignments, quizzes, and past exams.
    - Make structured knowledge maps and topic dependency graphs.
    - Create concept cards with definition, intuition, conditions, common traps, example, and source.
    - Generate instructor-style practice questions with answers and grading points.
@@ -72,6 +79,7 @@ Choose the smallest mode that satisfies the request.
 - **Exam Cram Mode**: high-yield review plan for limited time, usually 1-7 days.
 - **Past Paper Mode**: analyze past papers to infer patterns and generate similar questions.
 - **Question Factory Mode**: generate practice questions, model answers, and rubrics.
+- **Assessment Reconstruction Mode**: use labeled assignments, quizzes, and past exams to summarize question patterns and reproduce important knowledge points in exam-like practice.
 - **Diagnosis Mode**: evaluate user answers, identify root causes, and prescribe targeted drills.
 - **Concept Card Mode**: produce concise exam-oriented cards.
 - **Study Path Mode**: make a calendar or session-by-session plan.
@@ -81,6 +89,7 @@ Choose the smallest mode that satisfies the request.
 Every substantial output should include:
 
 - Source basis: exact files/pages/slides/questions when available.
+- Material label: slides, assignment, quiz, past_exam, rubric, syllabus, notes, or inferred.
 - Transparent priority rationale: include `我是如何判断考点的` with high-frequency evidence, assignment evidence, quiz evidence, past-paper evidence, inferred parts, and uncertainty.
 - Exam relevance: why the item matters for finals.
 - Task type: recall, calculation, proof, explanation, comparison, application, case analysis, coding, lab interpretation, essay.
@@ -98,6 +107,63 @@ Every substantial output should include:
 - For long decks, do not write the final notes until global segmentation and per-segment extraction are done.
 - If extraction quality is too poor to preserve formulas, symbols, or page mapping, report the uncertainty instead of inventing math.
 - If source-derived diagrams are essential, describe or redraw the minimal conceptual diagram; do not add decorative visuals.
+
+## Material Labeling Rules
+
+For best results, encourage the user to separate or label inputs before generation:
+
+```text
+slides: Lecture 1.pdf, Lecture 2.pdf
+assignment: HW1.pdf, HW2.pdf
+quiz: Quiz1.pdf, Quiz2.pdf
+past_exam: 2023-final.pdf, 2024-midterm.pdf
+rubric: final-rubric.pdf
+syllabus: syllabus.pdf
+notes: my-notes.pdf
+```
+
+If labels are missing:
+
+- Infer labels from filenames only when obvious, such as `HW`, `assignment`, `quiz`, `past paper`, `final`, `midterm`, `exam`, `lecture`, `slides`, or `syllabus`.
+- If important files remain ambiguous, ask the user to identify them before generating final questions.
+- Continue with explicit uncertainty only when the user cannot provide labels.
+
+Use source types differently:
+
+- **Slides**: extract concepts, formulas, definitions, examples, and scope.
+- **Assignments**: identify practiced methods, multi-step procedures, common transformations, and teacher-preferred problem forms.
+- **Quizzes**: identify concise testable concepts, distractors, and short-answer wording.
+- **Past exams**: identify final-exam structure, recurring topics, difficulty, time pressure, and mark allocation.
+- **Rubrics**: identify scoring points and partial-credit expectations.
+- **Syllabus**: identify official learning outcomes and included/excluded units.
+
+## Question-Reconstruction Rules
+
+Before generating practice questions, summarize the assessment evidence:
+
+- recurring question formats
+- command verbs such as define, explain, calculate, compare, derive, prove, analyze, design
+- topic combinations that appear together
+- how homework problems are transformed into quiz or exam questions
+- common answer length and mark allocation
+- common traps or distractors
+
+Then generate questions in four layers:
+
+1. **基础保分题**: direct recall or one-step application from high-priority concepts.
+2. **作业变形题**: modify homework structures while preserving the tested method.
+3. **Quiz 风格快测题**: short, discriminative questions that expose concept gaps.
+4. **历年题复现题**: exam-like questions that reproduce topic, reasoning path, and difficulty without copying exact past exam wording.
+
+For each generated question, include:
+
+- source pattern: assignment, quiz, past exam, slide, or inferred
+- tested knowledge point
+- difficulty
+- model answer
+- grading points
+- common wrong answer
+- remediation drill
 
 ## Transparency Section
 
@@ -143,6 +209,7 @@ Load these only when needed:
 - `references/study-materials.md`: default file-producing workflow for final review notes and cheat sheets.
 - `references/latex-output.md`: LaTeX/PDF layout, required sections, build steps, and completion gate.
 - `references/question-design.md`: rules for instructor-style question generation, model answers, and grading rubrics.
+- `references/assessment-reconstruction.md`: material labeling, assessment pattern extraction, and knowledge-point reproduction.
 - `references/diagnosis-and-planning.md`: mistake taxonomy, remediation drills, and personalized review planning.
 
 Use `scripts/create_review_pack.py` when the user wants files created for a course review package or when course materials are provided and no output folder exists yet. It creates a LaTeX-first review pack with a final `.tex` template, source inventory, and working-notes file.

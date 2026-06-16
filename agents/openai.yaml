@@ -1,7 +1,7 @@
 interface:
   display_name: "FinalSkill"
-  short_description: "Turn course materials into exam-focused LaTeX/PDF review packs."
-  default_prompt: "Use $finalskill to turn my course PDFs, PPTs, quizzes, assignments, and past papers into a LaTeX/PDF final-exam review document."
+  short_description: "Turn labeled course materials into exam-focused LaTeX/PDF review packs."
+  default_prompt: "Use $finalskill to turn my labeled slides, assignments, quizzes, and past exams into a LaTeX/PDF final-exam review document with practice questions."
 
 policy:
   allow_implicit_invocation: true

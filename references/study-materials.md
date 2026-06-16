@@ -43,6 +43,15 @@ Segment notes should contain:
 - traps and likely mistakes
 - coverage uncertainty
 
+If the segment is an assignment, quiz, or past exam, also extract:
+
+- question type
+- tested knowledge point
+- command verb
+- answer format
+- mark allocation if available
+- transformation opportunity for new practice questions
+
 ## Final Review Notes Template
 
 ```latex
@@ -133,6 +142,9 @@ If a category has no evidence, write `暂无明确材料支持` and explain the 
 Before reporting completion, verify:
 
 - all major segments are represented
+- user-provided material labels are reflected in source analysis
+- assessment-pattern summary is present when assignments, quizzes, or past exams are provided
+- generated questions cite their source pattern
 - citations exist for major points when source locations are available
 - formulas are not missing from formula-heavy sections
 - important English terms are present

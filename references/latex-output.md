@@ -44,13 +44,15 @@ Every final document should include:
 
 1. `如何使用这份复习资料`
 2. `我是如何判断考点的`
-3. `考试地图`
-4. `考点复习`
-5. `考前速查表`
-6. `老师风格练习题`
-7. `答案与评分点`
-8. `错因诊断`
-9. `个性化复习路径`
+3. `材料分类与证据权重`
+4. `考题模式总结`
+5. `考试地图`
+6. `考点复习`
+7. `考前速查表`
+8. `老师风格练习题`
+9. `答案与评分点`
+10. `错因诊断`
+11. `个性化复习路径`
 
 If the user asks for a narrower artifact, include only relevant sections, but still include `我是如何判断考点的` unless the user explicitly excludes rationale.
 
@@ -88,4 +90,6 @@ Do not report completion unless:
 - `.tex` exists.
 - `我是如何判断考点的` is present and filled.
 - source citations are present where source locations are available.
+- material labels are reflected when the user provides or implies labels.
+- assessment-pattern summaries are included when assignments, quizzes, or past exams are available.
 - PDF exists, or a missing/failed `xelatex` build is explicitly reported.

@@ -14,6 +14,24 @@ Infer style from:
 
 If no past assessments exist, generate standard university final-style questions and clearly mark style as inferred.
 
+## Assessment-Aware Question Generation
+
+When labeled assignments, quizzes, and past exams are available, do not generate questions directly from slides alone. First create an assessment-pattern map:
+
+- past exams: section structure, repeated topics, difficulty, time pressure, mark allocation
+- assignments: method templates, multi-step procedures, transformation opportunities
+- quizzes: short-answer wording, distractors, common misconceptions
+- rubrics: scoring requirements and partial-credit rules
+
+Then generate questions that reproduce important knowledge points through assessment-like formats:
+
+- `基础保分题`: direct concept checks
+- `作业变形题`: homework-style method transformations
+- `Quiz 风格快测题`: concise diagnostic questions
+- `历年题复现题`: exam-like problems preserving structure and difficulty without copying exact wording
+
+Every generated question should state its `source pattern`, such as `based on HW2 Q3 method`, `similar to Quiz 1 conceptual trap`, or `past_exam pattern inferred from 2024 Final Q2`.
+
 ## Question Types
 
 | Type | Use When | Include |

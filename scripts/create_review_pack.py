@@ -9,7 +9,7 @@ from pathlib import Path
 
 FILES = {
     "working-notes.md": "# Working Notes\n\n## Segmentation Map\n\n## Extracted Exam Points\n\n## Coverage Concerns\n",
-    "sources.md": "# Sources\n\n| File | Pages/Slides/Questions Used | Notes |\n| --- | --- | --- |\n",
+    "sources.md": "# Sources\n\n| File | Label | Pages/Slides/Questions Used | Notes |\n| --- | --- | --- | --- |\n",
 }
 
 
@@ -50,6 +50,25 @@ TEX_TEMPLATE = r"""\documentclass[UTF8,12pt]{ctexart}
   \item \textbf{不确定部分：} 待补充 syllabus、quiz、作业或往年题后更新。
 \end{itemize}
 
+\section{材料分类与证据权重}
+\begin{itemize}
+  \item \textbf{课件 / slides：} 待补充。用于提取概念、公式、定义和例题。
+  \item \textbf{作业 / assignment：} 待补充。用于识别练习过的方法和可变形题型。
+  \item \textbf{Quiz：} 待补充。用于识别短题问法、概念陷阱和易错点。
+  \item \textbf{历年题 / past\_exam：} 待补充。用于识别考试结构、难度和重复题型。
+  \item \textbf{Rubric / syllabus / notes：} 待补充。用于确认评分点、考试范围和个人薄弱点。
+\end{itemize}
+
+\section{考题模式总结}
+\begin{itemize}
+  \item \textbf{题型结构：} 待补充。
+  \item \textbf{高频问法：} 待补充。
+  \item \textbf{作业到考试的变形：} 待补充。
+  \item \textbf{Quiz 常见陷阱：} 待补充。
+  \item \textbf{历年题重复模式：} 待补充。
+  \item \textbf{评分偏好：} 待补充。
+\end{itemize}
+
 \section{考试地图}
 \begin{longtable}{p{0.16\textwidth}p{0.27\textwidth}p{0.2\textwidth}p{0.1\textwidth}p{0.12\textwidth}}
 \toprule
@@ -82,12 +101,15 @@ TEX_TEMPLATE = r"""\documentclass[UTF8,12pt]{ctexart}
 
 \section{老师风格练习题}
 \subsection{基础保分题}
+待补充。每题标注 source pattern、tested knowledge point、difficulty、answer、grading points、common wrong answer。
+
+\subsection{作业变形题}
 待补充。
 
-\subsection{高频变形题}
+\subsection{Quiz 风格快测题}
 待补充。
 
-\subsection{压轴综合题}
+\subsection{历年题复现题}
 待补充。
 
 \section{答案与评分点}
