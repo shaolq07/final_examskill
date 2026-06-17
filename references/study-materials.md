@@ -1,170 +1,108 @@
-# Study Materials Workflow
+# Study Materials
 
-Use this reference when the user wants FinalSkill to directly create review materials from slides, PDFs, notes, quizzes, assignments, or past papers.
+Use this reference to write the content of the FinalSkill review pack.
 
-## Required Behavior
+## Final Pack Structure
 
-Do not stop at a chat-only summary unless the user explicitly asks for inline output only. Create a LaTeX source file and compiled PDF by default. Markdown may be used for internal working notes, but it is not the final deliverable unless the user explicitly requests Markdown.
+Every full review pack should contain these sections:
 
-Default output folder:
+1. `如何使用这份复习资料`
+2. `材料分类确认`
+3. `材料分类与证据权重`
+4. `我是如何判断考点的`
+5. `考题模式总结`
+6. `考试地图`
+7. `核心考点复习`
+8. `考前速查表`
+9. `老师风格练习题`
+10. `答案与评分点`
+11. `错因诊断`
+12. `个性化复习路径`
 
-```text
-FinalSkill - <course-or-source-stem>/
-```
+For narrower user requests, include only relevant sections, but keep `我是如何判断考点的` unless the user explicitly excludes rationale.
 
-Keep all generated notes, drafts, extracted text, question banks, answer keys, PDFs, LaTeX files, and logs in that folder.
+## Content Map
 
-## Default Study Material Set
+Use teaching materials to build the knowledge base:
 
-| File | Purpose |
-| --- | --- |
-| `FinalSkill - <stem>.tex` | Final LaTeX study document |
-| `FinalSkill - <stem>.pdf` | Compiled PDF final deliverable |
-| `working-notes.md` | Internal extraction notes and draft planning |
-| `sources.md` | Source inventory and coverage map |
+- **slides / lecture notes**: concepts, formulas, definitions, examples, scope, diagrams.
+- **syllabus**: official learning outcomes, included/excluded units, exam format if provided.
+- **notes**: student weak spots and extra context, lower confidence unless confirmed.
 
-## Global Read and Segmentation
+For each topic, capture:
 
-For every substantial course file:
-
-1. Read enough to identify the macro-structure.
-2. Segment by lecture, chapter, topic, page range, assignment, quiz, or past-paper section.
-3. Create per-segment notes before merging.
-4. Ensure every segment is represented or explicitly excluded.
-
-Before final generation, produce a material classification confirmation pass when labels were inferred from filenames. Ask the user to classify ambiguous assessment files before generating the final question bank.
-
-Segment notes should contain:
-
-- segment id
-- source page/slide/question range
-- main exam points
-- formulas and methods
-- key concepts with English terms
-- examples or problem patterns
-- traps and likely mistakes
-- coverage uncertainty
-
-If the segment is an assignment, quiz, or past exam, also extract:
-
-- question type
-- tested knowledge point
-- command verb
-- answer format
-- mark allocation if available
-- transformation opportunity for new practice questions
-
-## Final Review Notes Template
-
-```latex
-\section{如何使用这份复习资料}
-\begin{itemize}
-  \item <highest priority action>
-  \item <what to memorize>
-  \item <what to practice>
-\end{itemize}
-
-\section{我是如何判断考点的}
-\begin{itemize}
-  \item \textbf{高频依据：} <repeated slides/topics with citations>
-  \item \textbf{作业依据：} <assignments/labs with citations>
-  \item \textbf{Quiz 依据：} <quiz evidence with citations>
-  \item \textbf{往年题依据：} <past paper evidence with citations>
-  \item \textbf{推测部分：} <inferred priorities and why>
-  \item \textbf{不确定部分：} <gaps, weak evidence, or extraction uncertainty>
-\end{itemize}
-
-\section{考试地图}
-<readable table or bullet list>
-
-\section{<Unit or Topic>}
-\subsection{核心考点}
-\begin{itemize}
-  \item \textbf{<point>}：<concise explanation>. 来源：<file/page/slide>.
-\end{itemize}
-
-\subsection{关键术语}
-\begin{itemize}
-  \item \textbf{Chinese term (English term)}：<definition and exam use>.
-\end{itemize}
-
-\subsection{公式 / 方法}
-\begin{itemize}
-  \item \textbf{<formula or method>}：<conditions, steps, and trap>. 来源：<file/page/slide>.
-\end{itemize}
-```
-
-## Exam Cheat Sheet Template
-
-```latex
-\section{考前速查表}
-
-\subsection{必背定义}
-<compact list or table>
-
-\subsection{公式与适用条件}
-<compact list or table>
-
-\subsection{解题流程}
-<compact list or table>
-
-\subsection{最后检查的易错点}
-<compact list or table>
-```
+- exam role;
+- definition and intuition;
+- formulas, conditions, and procedures;
+- representative example pattern;
+- common traps;
+- source page/slide references;
+- priority: `S`, `A`, `B`, or `C`;
+- confidence: high, medium, low.
 
 ## Required Transparency Section
 
-Every final `.tex` document must include:
+The final document must include:
 
 ```latex
 \section{我是如何判断考点的}
 \begin{itemize}
-  \item \textbf{高频依据：}
-  \item \textbf{作业依据：}
-  \item \textbf{Quiz 依据：}
-  \item \textbf{往年题依据：}
-  \item \textbf{推测部分：}
-  \item \textbf{不确定部分：}
+  \item \textbf{高频依据：} <repeated topics or slide emphasis>
+  \item \textbf{作业依据：} <assignment evidence>
+  \item \textbf{Quiz 依据：} <quiz evidence>
+  \item \textbf{往年题依据：} <past exam evidence>
+  \item \textbf{推测部分：} <inference from course structure>
+  \item \textbf{不确定部分：} <missing labels, weak evidence, extraction uncertainty>
 \end{itemize}
 ```
 
-If a category has no evidence, write `暂无明确材料支持` and explain the consequence.
+If no evidence exists for a category, write `暂无明确材料支持` instead of inventing support.
 
-## LaTeX Build Requirements
+## Exam Map
 
-- Use `xelatex` by default.
-- Use UTF-8 source.
-- Include Chinese font support through `ctexart`.
-- Keep layout readable; do not force dense two-column output unless requested.
-- Escape LaTeX special characters from source text.
-- Use citations like `来源：Lecture 3, p. 12` or `来源：Quiz 2, Q4`.
+Use a compact table or list:
 
-## Verification Gate
+```text
+Topic | Priority | Why it matters | Likely task | Source | Confidence
+```
 
-Before reporting completion, verify:
+Prefer lists when the table becomes too wide for A4.
 
-- all major segments are represented
-- user-provided material labels are reflected in source analysis
-- assessment-pattern summary is present when assignments, quizzes, or past exams are provided
-- generated questions cite their source pattern
-- citations exist for major points when source locations are available
-- formulas are not missing from formula-heavy sections
-- important English terms are present
-- practice questions match course evidence
-- the final `.tex` exists in the output folder
-- the PDF exists if `xelatex` is available and compilation succeeds
-- `我是如何判断考点的` is present and filled
-- assessment questions include `source pattern`
-- `validate_review_pack.py` passes when available
-- any uncertainty is reported explicitly
+## Core Review Notes
 
-## PDF Output
+For each S/A-level topic:
 
-PDF is default.
+```latex
+\subsection{<考点名称> (<English Term>)}
+\begin{itemize}
+  \item \textbf{考试作用：} ...
+  \item \textbf{定义 / 直觉：} ...
+  \item \textbf{公式 / 方法：} ...
+  \item \textbf{典型问法：} ...
+  \item \textbf{易错点：} ...
+  \item \textbf{来源：} ...
+\end{itemize}
+```
 
-1. Write a `.tex` version of the review notes or cheat sheet.
-2. Check that `xelatex` is available.
-3. Compile with `xelatex`.
-4. Verify the PDF exists and the compile command succeeded.
+## Cheat Sheet
 
-If `xelatex` is missing, report the blocker and provide the `.tex` file as the deliverable. Do not silently downgrade to Markdown.
+Include fast lookup material:
+
+- must-memorize definitions;
+- formulas and use conditions;
+- procedures and decision rules;
+- last-minute traps;
+- high-yield examples.
+
+Keep it readable. Do not force dense two-column formatting unless requested.
+
+## Verification Before Build
+
+Check:
+
+- all major file groups are represented or explicitly excluded;
+- S/A topics include citations where available;
+- formulas are preserved or uncertainty is flagged;
+- important English terms appear in parentheses;
+- assessment-pattern summary exists if assessment materials were provided;
+- every final practice question has `source pattern`.

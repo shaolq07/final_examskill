@@ -1,61 +1,53 @@
 # Assessment Reconstruction
 
-Use this reference when the user wants stronger question generation from labeled course materials, especially assignments, quizzes, and past exams.
+Use this reference for material labeling, exam-pattern analysis, practice-question generation, model answers, and grading rubrics.
 
 ## Core Principle
 
-Good question generation depends on separating content sources from assessment sources.
+Separate **content sources** from **assessment sources**:
 
-- Slides and lecture notes explain what was taught.
-- Assignments show what methods students were expected to practice.
-- Quizzes show compact concepts and common traps.
-- Past exams show final-exam structure, difficulty, and repeated patterns.
-- Rubrics show how answers are scored.
+- slides and lecture notes explain what was taught;
+- assignments show practiced methods and transformable problem structures;
+- quizzes show compact testable concepts, distractors, and wording traps;
+- past exams show exam structure, difficulty, repeated patterns, and time pressure;
+- rubrics show how points are awarded.
 
-Ask the user to label materials when labels are missing and filenames are ambiguous.
+## Material Classification
 
-## Recommended User Input Format
+Recommended user input:
 
 ```text
 slides:
 - Lecture 1.pdf
-- Lecture 2.pdf
 
 assignment:
 - HW1.pdf
-- HW2.pdf
 
 quiz:
 - Quiz 1.pdf
-- Quiz 2.pdf
 
 past_exam:
-- 2023 Final.pdf
 - 2024 Final.pdf
 
 rubric:
 - Final rubric.pdf
 ```
 
-If the user provides unlabeled files, infer obvious labels from filenames. If assessment files are unclear, ask for classification before producing the final PDF.
-
-## Material Classification Confirmation
-
-Before final generation, create a confirmation pass whenever labels are inferred:
+If labels are inferred, produce a confirmation section:
 
 ```latex
 \section{材料分类确认}
 \begin{itemize}
-  \item \textbf{课件 / slides：} <files classified as lecture materials>
-  \item \textbf{作业 / assignment：} <files classified as homework>
-  \item \textbf{Quiz：} <files classified as quizzes>
-  \item \textbf{历年题 / past\_exam：} <files classified as past exams>
-  \item \textbf{Rubric / syllabus / notes：} <other evidence>
-  \item \textbf{待确认：} <ambiguous files>
+  \item \textbf{课件 / slides：} ...
+  \item \textbf{作业 / assignment：} ...
+  \item \textbf{Quiz：} ...
+  \item \textbf{历年题 / past\_exam：} ...
+  \item \textbf{Rubric / syllabus / notes：} ...
+  \item \textbf{待确认：} ...
 \end{itemize}
 ```
 
-If `待确认` contains likely assessment files, ask the user before generating final questions.
+Ask the user to classify ambiguous assessment files before final question generation.
 
 ## Evidence Weighting
 
@@ -69,9 +61,9 @@ If `待确认` contains likely assessment files, ask the user before generating 
 | slides | definitions, formulas, examples, concept coverage | medium |
 | notes | personal weak points and extra context | low unless confirmed |
 
-## Assessment Pattern Summary
+## Stage 1: Assessment Pattern Summary
 
-Before generating questions, produce a concise pattern summary. This is Stage 1 of the question workflow:
+Before generating questions, write:
 
 ```latex
 \section{考题模式总结}
@@ -85,40 +77,70 @@ Before generating questions, produce a concise pattern summary. This is Stage 1 
 \end{itemize}
 ```
 
-## Knowledge-Point Reproduction
+## Stage 2: Question Generation
 
-This is Stage 2 of the question workflow. Generate questions only after the assessment-pattern summary exists.
-
-For each S/A-level concept, generate at least one reproduction question that retests the knowledge point in an exam-like form.
+Generate questions only after the assessment-pattern summary exists.
 
 Question layers:
 
-1. `基础保分题`: direct recall, formula use, or one-step explanation.
-2. `作业变形题`: structurally based on assignment methods, with changed numbers/context/conditions.
-3. `Quiz 风格快测题`: short diagnostic questions with likely traps.
-4. `历年题复现题`: similar topic, reasoning path, and difficulty to past exams without copying exact wording.
+1. **基础保分题**: direct recall, formula use, or one-step explanation.
+2. **作业变形题**: assignment-style methods with changed numbers, context, or conditions.
+3. **Quiz 风格快测题**: short diagnostic questions with likely traps.
+4. **历年题复现题**: analogous questions that preserve topic, reasoning path, and difficulty without copying exact wording.
 
-Each question should include:
+Every question must include:
 
-- `source pattern`: assignment, quiz, past_exam, slide, or inferred
-- `tested knowledge point`
-- `difficulty`: easy, medium, hard, exam-hard
-- `answer`
-- `grading points`
-- `common wrong answer`
-- `follow-up drill`
+- `source pattern`: assignment, quiz, past_exam, slide, or inferred;
+- `tested knowledge point`;
+- `difficulty`: easy, medium, hard, exam-hard;
+- `answer`;
+- `grading points`;
+- `common wrong answer`;
+- `follow-up drill`.
 
-The `source pattern` field is mandatory. Do not include final PDF questions without it. If the basis is weak, use `source pattern: inferred from <evidence>` and explain why.
+If the source pattern is weak, write `source pattern: inferred from <evidence>` and explain why. Do not include unsupported questions in the final PDF.
+
+## Question Types
+
+| Type | Use When | Include |
+| --- | --- | --- |
+| Recall | definitions, formulas, classifications | precise expected wording |
+| Explain | mechanisms, intuition, tradeoffs | key terms and causal links |
+| Compare | similar concepts or methods | comparison dimensions |
+| Calculate | numeric/formula tasks | givens, units, steps, final value |
+| Prove/derive | math, algorithms, theory | assumptions and logical sequence |
+| Apply | case/lab/design/coding scenario | constraints, data, expected reasoning |
+| Debug/diagnose | code, labs, proofs, calculations | symptoms, cause, fix |
+| Essay | humanities/social science/business | thesis, evidence, counterpoint |
+
+## Model Answer and Rubric
+
+Use this structure:
+
+```latex
+\paragraph{答案}
+<solution>
+
+\paragraph{评分点}
+\begin{itemize}
+  \item <mark allocation>: <criterion>
+\end{itemize}
+
+\paragraph{常见错误}
+<mistake and why it loses marks>
+
+\paragraph{补救练习}
+<follow-up drill>
+```
+
+Rubric rules:
+
+- grade observable reasoning, not vague quality;
+- give partial credit for correct setup;
+- separate conceptual, condition, arithmetic, wording, and notation errors;
+- for essays, grade thesis, course concepts, evidence, reasoning, counterargument, and organization;
+- for code, grade correctness, edge cases, complexity, readability, and explanation.
 
 ## Anti-Copy Rule
 
-Do not copy exact past exam wording unless the user explicitly asks for verbatim extraction. Generate analogous questions that preserve structure, tested concept, and difficulty.
-
-## When Labels Are Missing
-
-Use this fallback:
-
-1. Infer labels from obvious filenames.
-2. Put ambiguous files in `unknown`.
-3. Ask the user to classify `unknown` files if they are likely assessments.
-4. If the user cannot classify them, continue but mark all question-style conclusions from those files as low confidence.
+Do not copy exact past-exam wording unless the user explicitly asks for verbatim extraction. Generate analogous questions that preserve structure, tested concept, and difficulty.
