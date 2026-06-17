@@ -56,6 +56,8 @@ Every final document should include:
 
 If the user asks for a narrower artifact, include only relevant sections, but still include `我是如何判断考点的` unless the user explicitly excludes rationale.
 
+When labels are inferred, include `材料分类确认` before `材料分类与证据权重`.
+
 ## Required Transparency Section
 
 ```latex
@@ -92,4 +94,14 @@ Do not report completion unless:
 - source citations are present where source locations are available.
 - material labels are reflected when the user provides or implies labels.
 - assessment-pattern summaries are included when assignments, quizzes, or past exams are available.
+- every generated question in the final PDF has a `source pattern` or is explicitly marked `inferred`.
 - PDF exists, or a missing/failed `xelatex` build is explicitly reported.
+- `scripts/validate_review_pack.py` has been run when available, or the final response explains why it could not be run.
+
+## Failure Fallbacks
+
+- Missing `xelatex`: deliver `.tex`, report the missing executable, and do not claim PDF completion.
+- Table overflow: convert wide tables to lists or narrower `longtable` columns, then retry.
+- Chinese font failure: keep `ctexart`, report the font issue, and avoid Markdown fallback unless requested.
+- Formula failure: preserve the raw expression in `working-notes.md`, repair the LaTeX if possible, and mark uncertain formulas in the final document.
+- Nonzero compile exit: inspect the log, patch the `.tex`, and retry once when the issue is fixable.

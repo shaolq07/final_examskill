@@ -32,6 +32,8 @@ For every substantial course file:
 3. Create per-segment notes before merging.
 4. Ensure every segment is represented or explicitly excluded.
 
+Before final generation, produce a material classification confirmation pass when labels were inferred from filenames. Ask the user to classify ambiguous assessment files before generating the final question bank.
+
 Segment notes should contain:
 
 - segment id
@@ -152,6 +154,8 @@ Before reporting completion, verify:
 - the final `.tex` exists in the output folder
 - the PDF exists if `xelatex` is available and compilation succeeds
 - `我是如何判断考点的` is present and filled
+- assessment questions include `source pattern`
+- `validate_review_pack.py` passes when available
 - any uncertainty is reported explicitly
 
 ## PDF Output

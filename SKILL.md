@@ -22,12 +22,42 @@ Default files:
 
 Check that `xelatex` is available before promising the default PDF. If `xelatex` is unavailable, write the `.tex` file, report the PDF build blocker, and do not pretend the PDF was created. Only fall back to Markdown final output if the user explicitly asks for Markdown.
 
+## Best User Input Protocol
+
+For best results, ask the user to provide or confirm material labels before final generation:
+
+```text
+slides:
+- Lecture 1.pdf
+- Lecture 2.pdf
+
+assignment:
+- HW1.pdf
+- HW2.pdf
+
+quiz:
+- Quiz 1.pdf
+
+past_exam:
+- 2023 Final.pdf
+- 2024 Final.pdf
+
+rubric:
+- final-rubric.pdf
+
+syllabus:
+- syllabus.pdf
+```
+
+If the user uploads unlabeled files, first produce a short `Material Classification Confirmation` summary and ask for confirmation only when important files are ambiguous. Do not proceed to final question generation from an ambiguous pile of files when assessment files may be mixed with slides.
+
 ## Core Workflow
 
 1. **Ingest course evidence**
    - Identify file types: syllabus, slides/PDFs, lecture notes, assignments, quizzes, labs, past papers, rubrics, textbook chapters, user notes.
    - Ask the user to label materials as `slides`, `assignment`, `quiz`, `past_exam`, `rubric`, `syllabus`, or `notes` when labels are missing and filenames do not make the type obvious.
    - Treat user-provided labels as the primary source of truth for material type.
+   - Produce a material classification confirmation pass before final generation whenever labels are inferred or ambiguous.
    - Preserve source references by file name and page/slide/question number whenever available.
    - Separate instructor-provided evidence from student notes and model-generated inference.
    - Do not mix slides and assessments into one generic source bucket; slides explain content, while assignments, quizzes, and past exams reveal question style.
@@ -48,7 +78,9 @@ Check that `xelatex` is available before promising the default PDF. If `xelatex`
    - Write a final LaTeX document and compile it to PDF by default.
    - Include final review notes, exam cheat sheet, concept cards, practice questions, answer key, rubrics, mistake diagnosis, and review path in the same PDF unless the user requests a smaller artifact.
    - Include an assessment-pattern summary: recurring question types, command verbs, mark allocation, topic combinations, and common transformations from homework to exam questions.
+   - Generate questions in two stages: first write the assessment-pattern summary, then generate practice questions from that summary.
    - Generate knowledge-point reproduction questions that re-test important concepts in forms similar to assignments, quizzes, and past exams.
+   - Every generated question must include a `source pattern`; do not include questions without a source pattern in the final PDF.
    - Make structured knowledge maps and topic dependency graphs.
    - Create concept cards with definition, intuition, conditions, common traps, example, and source.
    - Generate instructor-style practice questions with answers and grading points.
@@ -139,7 +171,9 @@ Use source types differently:
 
 ## Question-Reconstruction Rules
 
-Before generating practice questions, summarize the assessment evidence:
+Use a two-stage workflow. Stage 1 summarizes the assessment evidence; Stage 2 generates questions from that summary.
+
+Stage 1 must summarize:
 
 - recurring question formats
 - command verbs such as define, explain, calculate, compare, derive, prove, analyze, design
@@ -148,7 +182,7 @@ Before generating practice questions, summarize the assessment evidence:
 - common answer length and mark allocation
 - common traps or distractors
 
-Then generate questions in four layers:
+Stage 2 generates questions in four layers:
 
 1. **基础保分题**: direct recall or one-step application from high-priority concepts.
 2. **作业变形题**: modify homework structures while preserving the tested method.
@@ -157,13 +191,15 @@ Then generate questions in four layers:
 
 For each generated question, include:
 
-- source pattern: assignment, quiz, past exam, slide, or inferred
+- source pattern: assignment, quiz, past exam, slide, or inferred; this field is mandatory
 - tested knowledge point
 - difficulty
 - model answer
 - grading points
 - common wrong answer
 - remediation drill
+
+If the source pattern cannot be identified, either mark it as `inferred` with a reason or omit the question from the final PDF.
 
 ## Transparency Section
 
@@ -192,6 +228,10 @@ For each bullet, fill in course-specific evidence with file/page/slide/question 
 - Escape LaTeX special characters in extracted text.
 - Do not report completion until the `.tex` file exists and `xelatex` either succeeded or failed with a clearly reported blocker.
 - If compilation fails, fix the `.tex` and retry when the failure is fixable.
+- If `xelatex` is missing, deliver the `.tex` file and explicitly report that the PDF build is blocked by a missing LaTeX engine.
+- If tables overflow or cause layout warnings, convert them to itemized lists before retrying.
+- If Chinese font support fails, keep the `.tex`, report the font/engine issue, and do not downgrade to Markdown unless the user asks.
+- If a formula causes compilation failure, preserve the original source formula in `working-notes.md`, repair the LaTeX expression if possible, and flag uncertain formulas in the final document.
 
 ## Evidence Rules
 
@@ -213,6 +253,7 @@ Load these only when needed:
 - `references/diagnosis-and-planning.md`: mistake taxonomy, remediation drills, and personalized review planning.
 
 Use `scripts/create_review_pack.py` when the user wants files created for a course review package or when course materials are provided and no output folder exists yet. It creates a LaTeX-first review pack with a final `.tex` template, source inventory, and working-notes file.
+Use `scripts/validate_review_pack.py` before final reporting when a review pack exists. It checks required LaTeX sections, source labels, source-pattern requirements, and PDF presence.
 
 ## Default Deliverable Shape
 

@@ -39,6 +39,24 @@ rubric:
 
 If the user provides unlabeled files, infer obvious labels from filenames. If assessment files are unclear, ask for classification before producing the final PDF.
 
+## Material Classification Confirmation
+
+Before final generation, create a confirmation pass whenever labels are inferred:
+
+```latex
+\section{材料分类确认}
+\begin{itemize}
+  \item \textbf{课件 / slides：} <files classified as lecture materials>
+  \item \textbf{作业 / assignment：} <files classified as homework>
+  \item \textbf{Quiz：} <files classified as quizzes>
+  \item \textbf{历年题 / past\_exam：} <files classified as past exams>
+  \item \textbf{Rubric / syllabus / notes：} <other evidence>
+  \item \textbf{待确认：} <ambiguous files>
+\end{itemize}
+```
+
+If `待确认` contains likely assessment files, ask the user before generating final questions.
+
 ## Evidence Weighting
 
 | Source Type | Use | Weight |
@@ -53,7 +71,7 @@ If the user provides unlabeled files, infer obvious labels from filenames. If as
 
 ## Assessment Pattern Summary
 
-Before generating questions, produce a concise pattern summary:
+Before generating questions, produce a concise pattern summary. This is Stage 1 of the question workflow:
 
 ```latex
 \section{考题模式总结}
@@ -68,6 +86,8 @@ Before generating questions, produce a concise pattern summary:
 ```
 
 ## Knowledge-Point Reproduction
+
+This is Stage 2 of the question workflow. Generate questions only after the assessment-pattern summary exists.
 
 For each S/A-level concept, generate at least one reproduction question that retests the knowledge point in an exam-like form.
 
@@ -87,6 +107,8 @@ Each question should include:
 - `grading points`
 - `common wrong answer`
 - `follow-up drill`
+
+The `source pattern` field is mandatory. Do not include final PDF questions without it. If the basis is weak, use `source pattern: inferred from <evidence>` and explain why.
 
 ## Anti-Copy Rule
 

@@ -50,6 +50,16 @@ TEX_TEMPLATE = r"""\documentclass[UTF8,12pt]{ctexart}
   \item \textbf{不确定部分：} 待补充 syllabus、quiz、作业或往年题后更新。
 \end{itemize}
 
+\section{材料分类确认}
+\begin{itemize}
+  \item \textbf{课件 / slides：} 待补充。
+  \item \textbf{作业 / assignment：} 待补充。
+  \item \textbf{Quiz：} 待补充。
+  \item \textbf{历年题 / past\_exam：} 待补充。
+  \item \textbf{Rubric / syllabus / notes：} 待补充。
+  \item \textbf{待确认：} 如有无法判断的文件，请先让用户确认分类。
+\end{itemize}
+
 \section{材料分类与证据权重}
 \begin{itemize}
   \item \textbf{课件 / slides：} 待补充。用于提取概念、公式、定义和例题。
@@ -101,7 +111,7 @@ TEX_TEMPLATE = r"""\documentclass[UTF8,12pt]{ctexart}
 
 \section{老师风格练习题}
 \subsection{基础保分题}
-待补充。每题标注 source pattern、tested knowledge point、difficulty、answer、grading points、common wrong answer。
+待补充。每题必须标注 source pattern、tested knowledge point、difficulty、answer、grading points、common wrong answer。
 
 \subsection{作业变形题}
 待补充。
