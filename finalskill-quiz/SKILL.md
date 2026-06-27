@@ -14,8 +14,8 @@ Default deliverables:
 - an output folder named `Quiz - <source-or-course-stem>`;
 - `quiz.tex` and compiled `quiz.pdf` as the main student-facing mock paper;
 - `quiz.md` as an editable backup version;
-- `answer-key.md` with model answers, scoring points, and explanations;
-- optional `answer-key.tex` / `answer-key.pdf` if the user wants a printable answer key.
+- `answer-key.tex` and compiled `answer-key.pdf` as the printable answer key;
+- `answer-key.md` as an editable backup with model answers, scoring points, and explanations.
 
 Do not generate notes or flashcards unless the user explicitly asks to switch tasks.
 
@@ -48,6 +48,7 @@ Do not generate notes or flashcards unless the user explicitly asks to switch ta
    - Provide final answer, reasoning, grading points, and common wrong answer.
    - For calculation questions, include setup, units, intermediate steps, and final result.
    - For essays, include thesis expectations and evidence criteria.
+   - Build the answer key as both Markdown and LaTeX/PDF. The PDF should be a clean teacher-facing scoring document with section headings aligned to the quiz, compact but complete explanations, and point-by-point rubrics.
 
 6. **Verify**
    - Check coverage against the blueprint.

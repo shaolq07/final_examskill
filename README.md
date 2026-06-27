@@ -117,6 +117,8 @@ Default outputs:
 quiz.pdf
 quiz.tex
 quiz.md
+answer-key.pdf
+answer-key.tex
 answer-key.md
 ```
 
