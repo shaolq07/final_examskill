@@ -12,9 +12,10 @@ Generate focused quizzes and practice tests from course materials. The goal is r
 Default deliverables:
 
 - an output folder named `Quiz - <source-or-course-stem>`;
-- `quiz.md` for the student-facing quiz;
+- `quiz.tex` and compiled `quiz.pdf` as the main student-facing mock paper;
+- `quiz.md` as an editable backup version;
 - `answer-key.md` with model answers, scoring points, and explanations;
-- optional `quiz.tex` and compiled PDF when the user asks for a printable quiz.
+- optional `answer-key.tex` / `answer-key.pdf` if the user wants a printable answer key.
 
 Do not generate notes or flashcards unless the user explicitly asks to switch tasks.
 
@@ -32,7 +33,8 @@ Do not generate notes or flashcards unless the user explicitly asks to switch ta
 
 3. **Build a quiz blueprint**
    - Decide question distribution by topic and difficulty.
-   - Mix question types: multiple choice, short answer, cloze, calculation, compare/contrast, application, proof/derive, debug/diagnose when relevant.
+   - Build the student-facing quiz like a real mock paper with sections, points, timing, and instructions.
+   - Mix question types: multiple choice, fill-in-the-blank/cloze, true/false with correction, short answer, compare/contrast, calculation/data interpretation, application/case analysis, diagram/process ordering, proof/derive, debug/diagnose when relevant.
    - If assessment materials exist, imitate structure and difficulty without copying exact wording.
 
 4. **Generate questions**
@@ -40,6 +42,7 @@ Do not generate notes or flashcards unless the user explicitly asks to switch ta
    - Include realistic distractors for multiple-choice questions.
    - Include enough information for calculation/application questions.
    - Avoid trick questions unrelated to the course material.
+   - The student-facing quiz must show only question numbers, point values, and question text. Do not show metadata such as `source pattern`, `tested knowledge point`, or `difficulty` in the student-facing quiz/PDF.
 
 5. **Generate answer key**
    - Provide final answer, reasoning, grading points, and common wrong answer.
@@ -69,7 +72,7 @@ common wrong answer:
 follow-up drill:
 ```
 
-`source pattern` can be:
+`source pattern` is internal metadata for generation and the answer key. Do not print it in the student-facing quiz. It can be:
 
 - `slide`: generated from lecture content;
 - `assignment`: transformed from homework method;
@@ -84,8 +87,27 @@ Support:
 - quick check: 5-10 questions;
 - topic quiz: one unit/topic;
 - mixed review: balanced across units;
-- mock exam: timed sections with marks;
+- mock exam: timed sections with marks and exam-style instructions;
 - weak-point drill: focused on user mistakes.
+
+## Mock Paper Layout
+
+Default section design:
+
+```text
+Course / Topic
+Time:
+Total Points:
+Instructions:
+
+Section A: Multiple Choice
+Section B: Fill-in-the-blank / True-False Correction
+Section C: Short Answer and Concept Explanation
+Section D: Application / Data / Diagram / Calculation
+Section E: Integrated Challenge
+```
+
+Adapt sections to the course. Life science courses should include process ordering, mechanism explanation, compare/contrast, and application questions when appropriate.
 
 ## Anti-Copy Rule
 

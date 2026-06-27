@@ -80,6 +80,7 @@ Use for:
 - NotebookLM-style flashcards;
 - active recall cards;
 - Anki/Quizlet-style CSV cards;
+- printable flashcard PDF decks;
 - cloze deletion cards;
 - formula cards;
 - misconception/trap cards.
@@ -89,6 +90,8 @@ Default outputs:
 ```text
 flashcards.md
 flashcards.csv
+flashcards.tex
+flashcards.pdf
 ```
 
 Example prompt:
@@ -111,6 +114,8 @@ Use for:
 Default outputs:
 
 ```text
+quiz.pdf
+quiz.tex
 quiz.md
 answer-key.md
 ```
@@ -118,7 +123,7 @@ answer-key.md
 Example prompt:
 
 ```text
-Use $finalskill-quiz to generate a 30-question mixed quiz with answers from these lecture PDFs.
+Use $finalskill-quiz to generate a 30-question mixed mock paper PDF with answers from these lecture PDFs.
 ```
 
 ## Design Principle

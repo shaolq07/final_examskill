@@ -12,9 +12,10 @@ Generate high-quality active-recall flashcards from course materials. The output
 Default deliverables:
 
 - an output folder named `Flashcards - <source-or-course-stem>`;
-- `flashcards.md` for readable review;
-- `flashcards.csv` for import into Anki/Quizlet-like tools when feasible;
-- optional `flashcards.tex` and compiled PDF if the user asks for a printable deck.
+- `flashcards.md` as a readable study deck grouped by topic;
+- `flashcards.csv` for import into Anki/Quizlet-like tools;
+- `flashcards.tex` and compiled `flashcards.pdf` as a printable deck when `xelatex` is available;
+- optional `flashcards.json` when structured downstream processing would help.
 
 Do not produce generic notes. This skill creates cards.
 
@@ -41,6 +42,8 @@ Do not produce generic notes. This skill creates cards.
    - Use cloze cards for formulas, definitions, sequences, conditions, and named theorems.
    - Use comparison cards for easily confused concepts.
    - Use trap cards for common mistakes.
+   - Organize the readable deck by topic with short, scannable cards that students would actually review.
+   - For printable output, make each card visually separated with front/back labels and enough whitespace for annotation.
 
 5. **Verify deck quality**
    - Remove duplicates and near-duplicates.
@@ -79,6 +82,36 @@ id,topic,type,difficulty,front,back,source,tags
 ```
 
 Escape commas, quotes, and newlines correctly. Keep the CSV UTF-8 encoded.
+
+## Readable / Printable Output
+
+`flashcards.md` should be pleasant to read:
+
+```markdown
+## Topic
+
+### Card FC001 · basic · easy
+
+**Front**
+...
+
+**Back**
+...
+
+**Source**
+...
+```
+
+For `flashcards.tex` / `flashcards.pdf`, use a simple printable layout:
+
+- grouped by topic;
+- one card block per concept;
+- visible `Front` and `Back`;
+- optional difficulty/type labels;
+- no dense tables;
+- enough spacing for handwritten notes.
+
+If PDF compilation is unavailable, still deliver Markdown and CSV.
 
 ## Output Rules
 
