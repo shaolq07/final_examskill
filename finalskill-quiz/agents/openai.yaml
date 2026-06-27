@@ -1,0 +1,7 @@
+interface:
+  display_name: "FinalSkill Quiz"
+  short_description: "Generate source-grounded quizzes and practice tests."
+  default_prompt: "Use $finalskill-quiz to generate a practice quiz with answers from my course materials."
+
+policy:
+  allow_implicit_invocation: true

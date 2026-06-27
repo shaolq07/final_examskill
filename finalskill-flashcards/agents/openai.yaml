@@ -1,0 +1,7 @@
+interface:
+  display_name: "FinalSkill Flashcards"
+  short_description: "Generate NotebookLM-style flashcards from course materials."
+  default_prompt: "Use $finalskill-flashcards to generate active-recall flashcards from my course materials."
+
+policy:
+  allow_implicit_invocation: true

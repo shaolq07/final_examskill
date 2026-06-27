@@ -1,180 +1,137 @@
-# FinalSkill
+# FinalSkill Skill Pack
 
-FinalSkill is a Codex skill for university final-exam review. It turns labeled course materials into a Chinese-first LaTeX/PDF review pack with exam-point notes, assessment-pattern analysis, practice questions, model answers, grading points, mistake diagnosis, and a personalized review path.
-
-It is not a generic PDF summarizer. FinalSkill separates **what was taught** from **how it is assessed**:
-
-- `slides` / lecture notes explain concepts, formulas, definitions, and scope.
-- `assignment` files reveal practiced methods and homework-to-exam transformations.
-- `quiz` files reveal short-answer wording, traps, and common misconceptions.
-- `past_exam` files reveal exam structure, repeated patterns, and difficulty.
-- `rubric` files reveal scoring criteria and partial-credit expectations.
-- `syllabus` files confirm official scope and learning outcomes.
-
-## What It Generates
-
-By default, FinalSkill creates a LaTeX-first review pack:
+FinalSkill is now a small pack of three independent Codex/Claude Code skills for studying course materials:
 
 ```text
-FinalSkill - <course>/
-  FinalSkill - <course>.tex
-  FinalSkill - <course>.pdf
-  sources.md
-  working-notes.md
+finalskill-notes/       Generate concise study notes from slides or PDFs.
+finalskill-flashcards/  Generate NotebookLM-style active-recall flashcards.
+finalskill-quiz/        Generate quizzes, practice tests, answers, and rubrics.
 ```
 
-The final PDF is designed to include:
+The old all-in-one workflow has been removed. Each skill is intentionally vertical, so the assistant can choose the right task from the user's intent:
 
-- how to use the review pack
-- material classification and evidence weighting
-- `我是如何判断考点的`
-- assessment-pattern summary
-- exam map
-- core topic review notes
-- exam cheat sheet
-- teacher-style practice questions
-- model answers and grading points
-- mistake diagnosis
-- personalized review path
+- "整理这份课件 / make notes" -> `finalskill-notes`
+- "生成 flashcards / Anki cards / 记忆卡片" -> `finalskill-flashcards`
+- "出题 / generate quiz / mock test / practice questions" -> `finalskill-quiz`
 
-## Recommended Input Format
+## Install From GitHub
 
-For best results, label files before asking FinalSkill to generate the pack:
-
-```text
-slides:
-- Lecture 1.pdf
-- Lecture 2.pdf
-
-assignment:
-- HW1.pdf
-- HW2.pdf
-
-quiz:
-- Quiz 1.pdf
-
-past_exam:
-- 2023 Final.pdf
-- 2024 Final.pdf
-
-rubric:
-- final-rubric.pdf
-
-syllabus:
-- syllabus.pdf
-```
-
-If labels are missing, FinalSkill can infer obvious labels from filenames, but ambiguous assessment files should be confirmed before final question generation.
-
-## Question Generation
-
-FinalSkill uses a two-stage question workflow:
-
-1. **Assessment-pattern summary**
-   - question structure
-   - high-frequency prompts
-   - homework-to-exam transformations
-   - quiz traps
-   - repeated past-exam patterns
-   - grading preferences
-
-2. **Practice-question generation**
-   - 基础保分题
-   - 作业变形题
-   - Quiz 风格快测题
-   - 历年题复现题
-
-Every generated question should include:
-
-- `source pattern`
-- `tested knowledge point`
-- `difficulty`
-- `answer`
-- `grading points`
-- `common wrong answer`
-- `follow-up drill`
-
-## Skill Structure
-
-```text
-SKILL.md
-agents/
-  openai.yaml
-references/
-  study-materials.md
-  assessment-reconstruction.md
-  diagnosis-and-planning.md
-  latex-output.md
-scripts/
-  create_review_pack.py
-  validate_review_pack.py
-```
-
-### Key Files
-
-- `SKILL.md`: lightweight entrypoint, trigger description, core workflow, completion standard.
-- `references/study-materials.md`: review-pack content structure and writing rules.
-- `references/assessment-reconstruction.md`: material labeling, assessment-pattern analysis, question generation, answers, and rubrics.
-- `references/diagnosis-and-planning.md`: mistake taxonomy, remediation, and cram plans.
-- `references/latex-output.md`: LaTeX/PDF build rules, fallback behavior, and completion gate.
-- `scripts/create_review_pack.py`: creates a LaTeX-first review-pack folder.
-- `scripts/validate_review_pack.py`: checks required sections, source labels, question source patterns, and optional PDF presence.
-
-## Create a Review-Pack Skeleton
+Clone the repository:
 
 ```bash
-python scripts/create_review_pack.py "CS101" --output .
+git clone https://github.com/shaolq07/final_examskill.git
 ```
 
-This creates:
+Then copy or symlink the three skill folders into your local skills directory.
+
+### Codex
+
+Example on Windows:
+
+```powershell
+mkdir D:\Codex\.codex\skills\finalskill-notes
+mkdir D:\Codex\.codex\skills\finalskill-flashcards
+mkdir D:\Codex\.codex\skills\finalskill-quiz
+
+Copy-Item -Recurse final_examskill\finalskill-notes\* D:\Codex\.codex\skills\finalskill-notes\
+Copy-Item -Recurse final_examskill\finalskill-flashcards\* D:\Codex\.codex\skills\finalskill-flashcards\
+Copy-Item -Recurse final_examskill\finalskill-quiz\* D:\Codex\.codex\skills\finalskill-quiz\
+```
+
+### Claude Code
+
+Personal skills usually live under:
+
+```bash
+~/.claude/skills/
+```
+
+Install:
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R final_examskill/finalskill-notes ~/.claude/skills/
+cp -R final_examskill/finalskill-flashcards ~/.claude/skills/
+cp -R final_examskill/finalskill-quiz ~/.claude/skills/
+```
+
+## Skill 1: FinalSkill Notes
+
+Use for:
+
+- lecture notes;
+- slide summaries;
+- course PDF summaries;
+- exam-oriented study notes;
+- formula/concept cheat sheets.
+
+Default output is a LaTeX/PDF study document when possible.
+
+Example prompt:
 
 ```text
-FinalSkill - cs101/
-  FinalSkill - cs101.tex
-  sources.md
-  working-notes.md
+Use $finalskill-notes to turn Lecture 1-6 PDFs into Chinese-first study notes.
 ```
 
-## Validate a Review Pack
+## Skill 2: FinalSkill Flashcards
 
-```bash
-python scripts/validate_review_pack.py "FinalSkill - cs101"
-```
+Use for:
 
-Require the compiled PDF:
+- NotebookLM-style flashcards;
+- active recall cards;
+- Anki/Quizlet-style CSV cards;
+- cloze deletion cards;
+- formula cards;
+- misconception/trap cards.
 
-```bash
-python scripts/validate_review_pack.py "FinalSkill - cs101" --require-pdf
-```
-
-## Compile the PDF
-
-FinalSkill expects `xelatex` for Chinese text and math:
-
-```bash
-cd "FinalSkill - cs101"
-xelatex -interaction=nonstopmode -halt-on-error "FinalSkill - cs101.tex"
-```
-
-If `xelatex` is missing, FinalSkill should still produce the `.tex` file and clearly report that PDF generation is blocked.
-
-## Current Design Principle
-
-FinalSkill follows this pipeline:
+Default outputs:
 
 ```text
-1. classify materials
-2. build content map from slides
-3. build assessment map from assignments/quizzes/past exams
-4. generate LaTeX review document and questions
-5. verify coverage, citations, and source patterns
-6. compile and validate PDF
+flashcards.md
+flashcards.csv
 ```
 
-The goal is not just to summarize course material, but to help students understand:
+Example prompt:
 
-- what to review
-- why it is likely important
-- how the instructor may test it
-- how to answer for marks
-- what mistakes to avoid
+```text
+Use $finalskill-flashcards to generate 80 active-recall flashcards from these slides.
+```
+
+## Skill 3: FinalSkill Quiz
+
+Use for:
+
+- quizzes;
+- mock tests;
+- practice questions;
+- answer keys;
+- grading points;
+- teacher-style question generation.
+
+Default outputs:
+
+```text
+quiz.md
+answer-key.md
+```
+
+Example prompt:
+
+```text
+Use $finalskill-quiz to generate a 30-question mixed quiz with answers from these lecture PDFs.
+```
+
+## Design Principle
+
+The three skills follow the same reliable document-processing pattern inspired by strong slide-summary workflows:
+
+```text
+1. read globally
+2. segment by lecture/topic
+3. extract task-specific material
+4. generate the artifact
+5. verify coverage and source references
+6. write files, and compile PDF when requested/available
+```
+
+No task should include unnecessary meta-explanation. Notes should start with useful learning content; flashcards should start with cards; quizzes should start with questions.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "FinalSkill Notes"
+  short_description: "Turn course materials into clean LaTeX/PDF study notes."
+  default_prompt: "Use $finalskill-notes to turn my course slides or lecture PDF into concise study notes."
+
+policy:
+  allow_implicit_invocation: true
