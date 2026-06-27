@@ -42,6 +42,8 @@ Do not produce generic notes. This skill creates cards.
    - Use cloze cards for formulas, definitions, sequences, conditions, and named theorems.
    - Use comparison cards for easily confused concepts.
    - Use trap cards for common mistakes.
+   - Write every `back` as the standard answer that the student should recall. It must directly define, explain, list, compare, calculate, or correct the `front`.
+   - Never use placeholder backs such as "review this concept", "结合本讲理解", "说明它如何支持核心概念", "refer to the slides", or any instruction that asks the student to produce the answer themselves.
    - Organize the readable deck by topic with short, scannable cards that students would actually review.
    - For printable output, make each card visually separated with front/back labels and enough whitespace for annotation.
 
@@ -66,11 +68,21 @@ source:
 tags:
 ```
 
+Back quality requirements:
+
+- `back` must be a self-contained answer, not a study prompt.
+- For term cards, give the definition plus one key feature or exam-relevant distinction.
+- For process cards, list the ordered steps and the outcome.
+- For comparison cards, state both sides and the key difference.
+- For formula cards, give the formula, variable meanings, and usage condition.
+- For trap cards, state the wrong idea, the correction, and why the correction is true.
+- Keep answers concise, but never omit the actual answer.
+
 For cloze cards, use this style:
 
 ```text
 front: 中心极限定理 (Central Limit Theorem) 说明，当 n 足够大时，样本均值近似服从 {{c1::正态分布}}。
-back: 条件、含义、常见误区。
+back: 条件：样本独立同分布且方差有限；含义：样本量增大时，样本均值的抽样分布趋近正态；常见误区：不是原始数据本身一定服从正态。
 ```
 
 ## CSV Export
@@ -118,6 +130,7 @@ If PDF compilation is unavailable, still deliver Markdown and CSV.
 - Prefer active recall over passive summary.
 - One card, one idea.
 - Avoid vague fronts such as "Explain this slide".
+- Avoid vague backs that only tell the student what to think about. The back is the answer key for that card.
 - Include source page/slide references when available.
 - Do not invent facts not supported by source material.
 - If source extraction is uncertain, mark the card source as `uncertain` or omit the card.
